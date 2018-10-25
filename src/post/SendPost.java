@@ -1,4 +1,6 @@
-public class Main {
+package post;
+
+public class SendPost {
 	
 	public static void main(String[] args){
 		for(String s : args)
