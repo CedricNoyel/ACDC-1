@@ -36,6 +36,7 @@ Manages the list of categories of posts. The list is stored in a text file.
 
 - `static ArrayList<String> getCategories()`
 - `static addCategory(String cat)`
+- `static deleteCategory(String cat)`
 
 ### MarkdownGenerator
 Generates Markdown text from data it receives.

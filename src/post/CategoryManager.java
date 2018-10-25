@@ -12,4 +12,8 @@ public class CategoryManager {
 		
 	}
 	
+	public static void deleteCategory(String cat){
+		
+	}
+	
 }
