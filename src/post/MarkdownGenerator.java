@@ -3,7 +3,17 @@ package post;
 public class MarkdownGenerator {
 	
 	public static String toMarkdown(Post post){
-		return "";
+		String md = "---\n" +
+					"layout: post\n" +
+					"title: \"" + post.getTitle() + "\"\n" +
+					"date: " + post.getDate() + "\n" +
+					"categories: " + post.getCategory() + "\n" +
+					"---\n" +
+					"\n" +
+					"* By " + post.getAuthor() + "*\n" +
+					"\n" +
+					post.getContent();
+		return md;
 	}
 	
 	public static String mdUrl(String text, String url){
