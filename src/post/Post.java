@@ -16,18 +16,10 @@ public class Post {
 		this.author = author;
 	}
 	
-	public void writeFile(){
-		
-	}
-	
-	public void seeDemo(){
-		
-	}
-	
 	public void send(){
 		
 	}
-
+	
 	public String getTitle() {
 		return title;
 	}

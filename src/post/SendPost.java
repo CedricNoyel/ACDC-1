@@ -13,6 +13,8 @@ public class SendPost {
 
 	public static void main(String[] args){
 		mainMenu();
+		
+		//Post post = new Post("Title", "2018-11-02", "jobs", "C'est le contenu.", "Author");
 	}
 
 	static void mainMenu(){
@@ -131,7 +133,33 @@ public class SendPost {
 		
 		newLine();
 		System.out.println(mdPost);
-
+		
+		WebsiteManager.addPost(post);
+				
+		System.out.println("Starting the demo at http://127.0.0.1:4000/blog/...");
+		
+		WebsiteManager.seeDemo();
+		
+		newLine();
+		System.out.println("Press ENTER to close the demo.");
+		
+		waitForEnter();
+		
+		WebsiteManager.closeDemo();
+		
+		System.out.println("Demo closed.");
+		
+		System.out.println("Do you want to save the post ? (y/n)");
+		
+		if(readYesNo()){
+			System.out.println("Post saved at " + WebsiteManager.getPostUrl(post));
+		} else {
+			WebsiteManager.deletePost(post);
+			System.out.println("Post deleted.");
+			
+			mainMenu();
+		}
+		
 	}
 
 	static void manageCategories(){
@@ -192,6 +220,14 @@ public class SendPost {
 
 	static void newLine(){
 		System.out.println();
+	}
+	
+	static void waitForEnter(){
+		try {
+			System.in.read();
+		} catch (IOException e) {
+			ErrorManager.readingError();
+		}
 	}
 
 	static String readLine(){
