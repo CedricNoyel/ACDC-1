@@ -1,0 +1,26 @@
+.carousel-img{
+    width:100%;
+    margin:auto;
+}
+
+.carousel{
+    margin:auto;
+    width:80%;
+}
+.carousel-inner{
+  margin:auto;
+  width:100%;
+  max-height: 550px !important;
+}
+
+.carousel-caption {
+   right: 10%;
+   left: auto;
+   top: auto;
+   bottom: -5px;
+}
+
+.carousel h4{
+    font-size: 16px;
+    font-weight: bold; 
+}

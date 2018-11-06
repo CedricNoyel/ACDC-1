@@ -1,0 +1,13 @@
+---
+layout: post
+title:  "VeRDi project accepted"
+date:   2018-09-01
+categories: publications
+---
+
+## Verified Reconfiguration Driven by Execution
+
+* Hélène Coullon
+
+The VeRDi project is funded by the French region Pays De La Loire where Nantes is located. VeRDi is an acronym for Verified Reconfiguration Driven by execution. It aims at addressing distributed software  reconfiguration in an efficient and verified way.
+

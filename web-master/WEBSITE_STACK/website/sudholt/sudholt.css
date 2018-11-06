@@ -1,0 +1,77 @@
+/**************************************************************************** 
+ * general attribute definitions 
+ ****************************************************************************/
+
+.center { text-align: center }
+.right  { text-align: right }
+
+.small   { font-size: small }
+.smaller { font-size: smaller }
+
+.attention { margin-right: 15%; margin-left: 15%;
+             font-size: small;
+             border-width: 1 }
+
+/**************************************************************************** 
+ * definitions for specific tags
+ ****************************************************************************/
+
+
+A:link    { color: blue }
+A:visited { color: darkblue }
+
+BODY { color: black; background-color: white }
+
+DIV.mark {  border-width: thin; border-color: LightGoldenRodYellow;
+            padding: 12px 12px 12px 12px;
+            background: LightGoldenRodYellow; 
+            border: 2px solid;
+  border-color: #f0f0f0 #909090 #909090 #f0f0f0;
+          }
+
+DIV.menuBar {
+  font-size: 8pt;
+  font-style: normal;
+  font-weight: normal;
+  color: #000000;
+  background-color: LightGoldenRodYellow;
+  border: 2px solid;
+  border-color: #f0f0f0 #909090 #909090 #f0f0f0;
+  padding: 4px 2px 4px 2px;
+  text-align: center;
+}
+
+DIV.signature { font-size: small }
+
+DIV.menuBar a.menuButton {
+  font-size: 8pt;
+  font-style: normal;
+  font-weight: normal;
+  color: #000000;
+}
+
+DIV.menuBar a.menuButton {
+  background-color: transparent;
+  border: 1px solid #d0d0d0;
+  color: #000000;
+  cursor: default;
+  left: 0px;
+  margin: 1px;
+  padding: 2px 10px 2px 10px;
+  position: relative;
+  text-decoration: none;
+  top: 0px;
+  z-index: 100;
+}
+
+DIV.menuBar a.menuButton:hover {
+  background-color: transparent;
+  border-color: #f0f0f0 #909090 #909090 #f0f0f0;
+  color: #000000;
+}
+
+HR.signature { padding-top: 10% }
+
+P.warning { font-size: small; text-align: right }
+
+P.quote {margin-right: 10%; margin-left: 10%}

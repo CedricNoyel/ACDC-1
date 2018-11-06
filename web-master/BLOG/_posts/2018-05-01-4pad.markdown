@@ -1,0 +1,19 @@
+---
+layout: post
+title:  "One paper accepted to 4PAD @ HPCS 2018"
+date:   2018-05-01 10:00:00
+categories: publications
+---
+
+## Madeus: A formal deployment model
+
+**Authors**: Maverick Chardet, Hélène Coullon, Christian Perez, Dimitri Pertin
+
+Distributed software architecture is composed of multiple interacting modules, or components. Deploying such software consists in installing them on a given infrastructure and leading them to a functional state. However, since each module has its own life cycle and might have various dependencies with other
+modules, deploying such software is a very tedious task, particularly on massively distributed and heterogeneous infrastructures. To address this problem, many solutions have been designed to automate the deployment process.
+
+In this paper, we introduce Madeus, a component-based deployment model for complex distributed software. Madeus accurately describes the life cycle of each component by a petri-net structure, and is able to finely express the dependencies between components. The overall dependency graph it produces is then used to reduce deployment time by parallelizing deployment actions. While this increases the precision and performance of the model, it also increases its complexity. For this reason, the operational semantics need to be clearly defined to prove results such as the termination of a deployment. In this paper, we formally describe the operational semantics of Madeus, and show how it can be used in a use-case: the deployment of a real and large distributed software (i.e. OpenStack).
+
+Accepted at the 5th International Symposium on Formal Approaches to Parallel and Distributed Systems [4PAD](http://hpcs2018.cisedu.info/2-conference/symposia---hpcs2018/symp05-4pad)
+
+4PAD is hosted at HPCS 2018 and will be held in Orléans from 16th to 20th of July 2018.

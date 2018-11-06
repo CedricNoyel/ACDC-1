@@ -1,0 +1,20 @@
+"Aspects at the crossroads of SE?!"
+Mario Südholt, FOAL'11, 21 March 2011
+-------------------------------------
+
+Crosscutting concerns are ubiquitous in large-scale software systems:
+aspects interact with many other concepts relevant for the definition
+and execution of such systems. Hence, the foundations of aspects
+should benefit from formal methods developed in other domains but
+should also contribute to related domains (and, more generally, to the
+foundations of SE as a whole). While the former is a cornerstone
+within the aspect community, the latter has enjoyed much less
+popularity.
+
+In this talk, we first present some issues on the frontier of the
+foundations of AOP and related research domains that illustrate their
+manifold relationships. We consider, in particular, calculi and formal
+properties of aspects, types, and events, both for sequential as well
+as concurrent and distributed systems. We then discuss some current
+and open issues that point to a more general role of aspects within
+the theory of SE.

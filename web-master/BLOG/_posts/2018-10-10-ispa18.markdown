@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "One Paper Has Been Accepted to ISPA 2018"
+date:   2018-10-10
+categories: publications
+---
+
+## Automatic Energy Efficient HPC Programming: A Case Study
+
+*Hélène Coullon, Laurent Lefevre, Christian Perez, Issam Rais*
+
+Energy consumption is one of the major challenges of modern datacenters and supercomputers. By applying Green Programming techniques, developers have to iteratively implement and test new versions of their software, thus evaluating the impact of each code version on their energy, power and performance objectives. This approach is manual and can be long, challenging and complicated, especially for High Performance Computing applications. In this paper, we formally introduces the definition of the Code Version Variability (CVV) leverage and present a first approach to automate Green Programming (i.e. CVV usage) by studying the specific use-case of an HPC stencil-based numerical code, used in production. This approach is based on the automatic generation of code versions thanks to a Domain Specific Language (DSL), and on the automatic choice of code version through a set of actors. Moreover, a real case study is introduced and evaluated though a set of benchmarks to show that several trade-offs are introduced by CVV. Finally, different kinds of production scenarios are evaluated through simulation to illustrate possible benefits of applying various actors on top of the CVV automation.
+
+[ISPA 2018](http://www.swinflow.org/confs/2018/ispa/)

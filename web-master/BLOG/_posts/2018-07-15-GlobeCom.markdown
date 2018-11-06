@@ -1,0 +1,36 @@
+---
+layout: post
+title:  "Article accepted to GlobeCom 2018"
+date:   2018-07-14
+categories: publications
+---
+
+## A Tree-Based Approach to locate Object Replicas in a Fog Storage Infrastructure
+
+* Bastien Confais, Adrien Lebre, Benoit Parrein
+
+Fog Computing infrastructures have been proposed as an alternative to
+Cloud Computing to provide computing with low latency for the Internet
+of Things (IoT). A few storage systems have been proposed to store
+data in those infrastructures. Most of them are relying on a
+Distributed Hash Table (DHT) which is not efficient because the node
+storing the location of the data may be placed far away from the
+object replicas. This leads to an access time of more than five
+seconds in some network architectures. In this paper, we propose to
+replace the DHT by a tree-based approach mapping the physical
+topology. Servers look for the location of an object by requesting
+successively their ancestors in the tree. Location records are also
+relocated close to the object replicas not only to limit the network
+traffic when requesting an object, but also to avoid an overload of
+the root node. We also propose to modify the Dijkstra's algorithm to
+compute the tree used. Finally, we evaluate our approach using the
+object store InterPlanetary FileSystem (IPFS) on Grid'5000 using both
+a micro experiment with a simple network topology and a macro
+experiment using the topology of the French National Research and
+Education Network (RENATER). We show that the time to locate an object
+in our approach is less than 15 ms on average which is around 20%
+better than using a DHT.
+
+Further information on the [GlobeCom 2018][1] website.
+
+[1]: http://globecom2018.ieee-globecom.org

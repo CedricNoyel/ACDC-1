@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "Seminar and Collaboration at Northern Arizona University"
+date:   2018-09-13
+categories: publications
+---
+
+## Seminar and Collaboration at Northern Arizona University
+
+* Hélène Coullon
+
+Hélène Coullon has been invited to the Nothern Arizona University from September 10th to 16th for a collaboration in link with the VeRDi project. She has given a seminar the 13th of September entitled "Performance, Software engineering and verification: a wining combination for HPC and Utility computing?".

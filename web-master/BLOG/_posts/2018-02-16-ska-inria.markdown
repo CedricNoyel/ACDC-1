@@ -1,0 +1,17 @@
+---
+layout: post
+title:  "SKA-France / INRIA meeting"
+date:   2018-02-16 10:00:00 +0200
+categories: meetings
+---
+
+## SKA-France / INRIA meeting at Paris Observatory
+
+*By Hélène Coullon*
+
+"On February 16, 2018, SKA-France organised a meeting together with the French National Institute for
+computer science and applied mathematics (INRIA). After a general overview of SKA provided by the SKA-France director, the main objective of the meeting was to focus on the computing challenges of the project, its workflow and on the organisation of the SKA Regional Centres, extensively described in the presentations by Miles Deegan and Rosie Bolton, from SKAO."
+
+STACK was represented at this meeting and has found many interesting subjects related to its research domains, such as geo-distributed data centers and associated data management and data locality, as well as automatic deployment and reconfiguration challenges.
+
+[get the PDF]({{ "/assets/ska-inria.pdf" | absolute_url }})

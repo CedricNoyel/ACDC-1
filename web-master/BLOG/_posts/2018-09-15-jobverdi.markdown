@@ -1,0 +1,62 @@
+---
+layout: post
+title:  "Postdoc position"
+date:   2018-09-15
+categories: jobs
+---
+
+## 18 months postdoc position - VeRDi project
+
+* Hélène Coullon
+
+We are opening a post-doc position in the VeRDi project. 
+
+The VeRDi project is funded by the French region Pays De La Loire 
+where Nantes is located. VeRDi is an acronym for Verified Reconfiguration
+Driven by execution. It aims at addressing distributed software reconfiguration 
+in an efficient and verified way
+
+The postdoc position is part of the multi-disciplinary VeRDi project. 
+VeRDi can be divided in two different parts (though strongly related): 
+(1) the design of efficient distributed reconfiguration models and systems; 
+(2) the formalization of these models and the formal verification of some properties on them. 
+
+The STACK team and the other actors of the VeRDi project are researchers 
+and engineers specialized in the first aspect of the project. 
+The role of the postdoc candidate is thus to lead the second research aspect 
+of the project with Helene Coullon. To help the candidate in this difficult task, 
+two collaborations have already been initiated by Helene Coullon. 
+The postdoc candidate will collaborate with the STR team of the LS2N 
+specialized in Petri Nets and model checking, as well as with 
+the Northern Arizona University (Frederic Loulergue) for aspects related 
+to the proof assistant Coq. Moreover, the LS2N also holds the Inria 
+research team Gallinette, specialized in proof assistants and involved 
+the Coq development team. Finally, research is already ongoing regarding 
+the formal and verification aspects of the Madeus deployment model 
+designed by the team. 
+
+This work will be the starting point of the postdoc candidate.
+
+The missions of the postdoc candidate are to:
+
+- formalize and prove few properties on reconfiguration models both statically and at runtime,
+- enrich the team and participate to the team decisions from a formal perspective,
+- collaborate with other teams specialized in model checking and proof assistants,
+- publish in a top ranked conference.
+
+The expected skills of the candidate are:
+
+- a strong knowledge on formalization, model checking and proof assistants,
+- an ability to collaborate with other domains and to apply their knowledge to other domains,
+- a strong motivation for the project and its subject.
+
+The postdoc position is based in Nantes at the IMT Atlantique engineering school. The candidate will be a member of the STACK research group
+(http://stack.inria.fr/). This team is part of the LS2N laboratory of Nantes, 
+and the DAPI department of IMT Atlantique. The salary of the postdoc candidate
+will be 33500 with an additional annual bonus of 6.6%. By subtracting taxes 
+and spreading the bonus on each month, the net salary is equivalent to 2380e.
+
+Please contact Helene Coullon to apply: helene.coullon AT inria.fr
+
+More details are available here: 
+[http://helene-coullon.fr/download/postdoc-position.pdf](http://helene-coullon.fr/download/postdoc-position.pdf)
