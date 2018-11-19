@@ -1,44 +1,32 @@
-# ACDC Project
-## Class description
+# ACDC 
 
-### SendPost
-Main class that helps the user create and send a post.
+## Site web statique dynamique
 
-- `void main(String args)`
+L'objectif de ce projet est de faciliter l'ajout de posts sur un site web se basant sur le générateur de sites statiques [jekyll](https://jekyllrb.com/). 
 
-### Post
-Contains the data of the post that will be sent.
+La version actuelle du projet est une application en invites de commandes. Il aura à terme un interface visuelle.
 
-*Getters*
+## Description de l'API
 
-- `String getTitle()`
-- `String getDate()`
-- `String getCategory()`
-- `String getContent()`
-- `String getAuthor()`
+Voici le diagramme de classe utilisé dans l'application:
 
-*Setters*
+![](./img/UML_Post.png)
 
-- `setTitle(String title)`
-- `setDate(String date)`
-- `setCategory(String category)`
-- `setContent(String content)`
-- `setAuthor(String auth)`
+La documentation JavaDoc est disponible à l'URL [raphael-hascoet.github.io/ACDC/](https://raphael-hascoet.github.io/ACDC/).
 
-*Methods*
+## Mise en place
 
-- `writeFile()` - generates a .markdown file containing the post
-- `seeDemo()` - shows a preview of the post 
-- `send()` - sends the post to the git repository
+Ce programme requiert :
+- [Jekyll](https://jekyllrb.com/)
+- [Git](https://git-scm.com/)
+- [Java JRE](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
 
-### CategoryManager
-Manages the list of categories of posts. The list is stored in a text file.
+Vous devrez également lier le dépot de votre site à un dépot distant à l'aide d'une clé ssh. Le dépot par défaut se trouve dans le dossier `web-master`. Suivez [ce lien](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#adding-your-ssh-key-to-the-ssh-agent) pour plus d'informations.
 
-- `static ArrayList<String> getCategories()`
-- `static addCategory(String cat)`
-- `static deleteCategory(String cat)`
+Si vous souhaitez modifier le chemin du dépot local, il faudra modifier les attributs constants situés dans la classe `WebsiteManager` (ce processus ne sera plus nécéssaire dans l'application finale car il sera intégré dans l'interface).
 
-### MarkdownGenerator
-Generates Markdown text from data it receives.
+## Execution
 
-- `static String toMarkdown(Post post)`
+Une fois le programme mis en place, il existe deux possibilités pour l'utiliser:
+- Ouvrir le projet dans une IDE telle que [Eclipse](https://www.eclipse.org/) et l'éxecuter
+- En invite de commandes, utiliser la commande `java -cp bin post.SendPost` dans le dépot principal
