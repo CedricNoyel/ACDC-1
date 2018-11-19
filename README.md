@@ -28,5 +28,5 @@ Si vous souhaitez modifier le chemin du dépot local, il faudra modifier les att
 ## Execution
 
 Une fois le programme mis en place, il existe deux possibilités pour l'utiliser:
-- Ouvrir le projet dans une IDE telle que [Eclipse](https://www.eclipse.org/) et l'éxecuter
-- En invite de commandes, utiliser la commande `java -cp bin post.SendPost` dans le dépot principal
+- Ouvrir le projet dans une IDE telle que [Eclipse](https://www.eclipse.org/) et l'éxecuter.
+- En invite de commandes, utiliser la commande `java -cp bin post.SendPost` dans le dépot principal.
