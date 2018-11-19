@@ -21,6 +21,6 @@ public class MarkdownGenerator {
 	}
 	
 	public static String mdImage(String urlImg){
-		return String.format("![%s]", urlImg);
+		return String.format("![](%s)", urlImg);
 	}
 }
