@@ -7,6 +7,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.InputMismatchException;
 
+/**
+ * Main class for the console application
+ * 
+ * @author Raphaël HASCOËT
+ */
 public class SendPost {
 
 	private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -153,6 +158,7 @@ public class SendPost {
 		
 		if(readYesNo()){
 			System.out.println("Post saved at " + WebsiteManager.getPostUrl(post));
+			
 		} else {
 			WebsiteManager.deletePost(post);
 			System.out.println("Post deleted.");
@@ -160,6 +166,15 @@ public class SendPost {
 			mainMenu();
 		}
 		
+		System.out.println("Do you want to send the post to Git ? (y/n)");
+		
+		if(readYesNo()){
+			System.out.println("Sending the post to Git...");
+			GitManager.sendPost(post);
+			System.out.println("Post sent");
+		}
+		
+		mainMenu();
 	}
 
 	static void manageCategories(){

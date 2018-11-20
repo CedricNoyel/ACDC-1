@@ -1,5 +1,10 @@
 package post;
 
+/**
+ * Utility class to generate Mardown snippets
+ * 
+ * @author Raphaël HASCOËT
+ */
 public class MarkdownGenerator {
 	
 	public static String toMarkdown(Post post){

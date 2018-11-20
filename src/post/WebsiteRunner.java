@@ -4,6 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Runnable used to run the demo of the website in the background
+ * 
+ * @author Raphaël HASCOËT
+ */
 public class WebsiteRunner implements Runnable{
 
 	private Process proc;
