@@ -12,6 +12,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+/**
+ * Manages the post categories list
+ * 
+ * @author Raphaël HASCOËT
+ */
 public class CategoryManager {
 	
 	private final static String FILE_PATH = "categories.txt";

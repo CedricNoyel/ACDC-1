@@ -4,17 +4,25 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * Manages website linked services
+ * 
+ * @author Raphaël HASCOËT
+ */
 public class WebsiteManager {
 
-	private static final String BLOG_PATH = "web-master/BLOG/";
+	private static final String WEBSITE_PATH = "web-master/";
+	private static final String BLOG_PATH = WEBSITE_PATH + "BLOG/";
 	private static final String POSTS_PATH = BLOG_PATH + "_posts/";
-	private static final String HOST_NAME = "127.0.0.1";
-	private static final int PORT_USED = 4000;
-	private static final String SITE_URL = "http://" + HOST_NAME + ":" + PORT_USED + "/blog/";
 
 	private static Thread webRunner = new Thread();
 	private static Process proc = null;
 
+	/**
+	 * Saves a post as a Markdown file in the website's posts folder
+	 * 
+	 * @param post The post to be saved
+	 */
 	public static void addPost(Post post){
 
 		String mdPost = MarkdownGenerator.toMarkdown(post);
@@ -29,6 +37,11 @@ public class WebsiteManager {
 
 	}
 	
+	/**
+	 * Deletes a post's file in the website's post folder if it exists
+	 * 
+	 * @param post The post to be deleted
+	 */
 	public static void deletePost(Post post){
 		File filePost = new File(getPostUrl(post));
 		
@@ -37,6 +50,9 @@ public class WebsiteManager {
 		}
 	}
 
+	/**
+	 * Starts the demo of the website and sends the user to the website
+	 */
 	public static void seeDemo(){
 		boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
 		
@@ -58,6 +74,9 @@ public class WebsiteManager {
 		
 	}
 	
+	/**
+	 * Closes the demo of the website if it is open
+	 */
 	public static void closeDemo(){
 		if(webRunner.isAlive() && proc != null){
 			proc.destroy();
@@ -65,17 +84,27 @@ public class WebsiteManager {
 			ErrorManager.sendError("The demo is not running.");
 		}
 	}
+	
+	/**
+	 * @return The path of the local website
+	 */
+	public static String getWebsitePath(){
+		return WEBSITE_PATH;
+	}
 
+	/**
+	 * @return The path of the BLOG folder
+	 */
 	public static String getBlogPath(){
 		return BLOG_PATH;
 	}
 	
-	public static String getSiteUrl(){
-		return SITE_URL;
-	}
-	
+	/**
+	 * @param post The post you want the URL of
+	 * @return The path to the file when it is saved in the posts folder of the website
+	 */
 	public static String getPostUrl(Post post){
-		return POSTS_PATH + post.getDate() + '-' + post.getTitle().replace(' ', '-') + ".markdown";
+		return POSTS_PATH + post.getFileName();
 	}
 
 }

@@ -22,8 +22,7 @@ public class GitManager {
 	private final static String GIT_REPO = WebsiteManager.getWebsitePath() + ".git";
 
 	/**
-	 * Sends the post to the website's git repository
-	 * The post needs to be saved in the local website's posts folder in order for this to work
+	 * Sends the post to the website's git repository. The post needs to be saved in the local website's posts folder in order for this to work
 	 * 
 	 * @param post The post to be sent to the Git repository
 	 */
