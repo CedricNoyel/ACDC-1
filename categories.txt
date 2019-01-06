@@ -1,5 +1,0 @@
-awards
-jobs
-arrivals
-test
-poisson
