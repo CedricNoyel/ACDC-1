@@ -1,2 +1,0 @@
-if you want to add new pictures, please put it in the RAW directory and then call fix-sized.sh script.
-The script will convert all pictures to a standard height (i.e. 480px)

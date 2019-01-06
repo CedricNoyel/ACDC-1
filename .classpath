@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="ressources"/>
+	<classpathentry kind="lib" path="resources/jsch-0.1.54.jar"/>
+	<classpathentry kind="lib" path="resources/org.eclipse.jgit-5.1.3.201810200350-r.jar"/>
+	<classpathentry kind="lib" path="resources/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="resources/slf4j-simple-1.7.25.jar"/>
+	<classpathentry kind="lib" path="resources/ekit.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
