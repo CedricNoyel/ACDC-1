@@ -1,4 +1,4 @@
-package view;
+package model;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +14,8 @@ public class AccessProperties {
 	private static AccessProperties SINGLETON = null;
 	
 	public static String LOCAL_REPOSITORY = "localRepository";
-	public static String GITHUB_REPOSITORY = "gitRepository";
+	public static String GIT_USER = "gitUser";
+	public static String GIT_PASSWORD = "gitPassword";
 
 	ArrayList<String> result = new ArrayList<>();
 	InputStream inputStream;
@@ -36,16 +37,24 @@ public class AccessProperties {
 		return result.get(0);
 	}
 	
-	public String getGitRepo() {
+	public String getGitUser() {
 		return result.get(1);
 	}
 	
-	public void updateGitRepository(String value) {
-		this.updatePropertyValue(AccessProperties.GITHUB_REPOSITORY, value);
+	public String getGitPassword() {
+		return result.get(2);
 	}
 	
 	public void updateLocalRepository(String value) {
 		this.updatePropertyValue(AccessProperties.LOCAL_REPOSITORY, value);
+	}
+
+	public void updateGitUser(String value) {
+		this.updatePropertyValue(AccessProperties.GIT_USER, value);
+	}
+	
+	public void updateGitPassword(String value) {
+		this.updatePropertyValue(AccessProperties.GIT_PASSWORD, value);
 	}
  
 	public ArrayList<String> getPropValues() {
@@ -62,7 +71,8 @@ public class AccessProperties {
 			}
  
 			result.add(prop.getProperty(AccessProperties.LOCAL_REPOSITORY));
-			result.add(prop.getProperty(AccessProperties.GITHUB_REPOSITORY));
+			result.add(prop.getProperty(AccessProperties.GIT_USER));
+			result.add(prop.getProperty(AccessProperties.GIT_PASSWORD));
 			
 		} catch (Exception e) {
 			System.out.println("Exception: " + e);

@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import view.AccessProperties;
-
 /**
  * Manages the post categories list
  * 

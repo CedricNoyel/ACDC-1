@@ -9,8 +9,6 @@ import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 
-import view.AccessProperties;
-
 /**
  * Manages the Git services
  * 

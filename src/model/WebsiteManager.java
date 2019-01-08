@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import view.AccessProperties;
 import view.Main;
 
 /**
@@ -15,8 +14,8 @@ import view.Main;
 public class WebsiteManager {
 
 	private static final String WEBSITE_PATH = AccessProperties.getInstance().getLocalRepository() + File.separator;
-	private static final String BLOG_PATH = WEBSITE_PATH + "BLOG/";
-	private static final String POSTS_PATH = BLOG_PATH + "_posts/";
+	private static final String BLOG_PATH = WEBSITE_PATH + "BLOG" + File.separator;
+	private static final String POSTS_PATH = WEBSITE_PATH + "BLOG" + File.separator + "_posts" + File.separator;
 
 	private static Thread webRunner = new Thread();
 	private static Process proc = null;
@@ -61,7 +60,7 @@ public class WebsiteManager {
 		
 		ProcessBuilder builder = new ProcessBuilder();
 		if (isWindows) {
-			builder.command("cmd.exe", "/c", "bundle exec jekyll serve -q");
+			builder.command("cmd.exe", "/c", "bundle exec jekyll serve -o");
 		} else {
 			builder.command("sh", "-c", "bundle exec jekyll serve -o", ">&-");
 		}

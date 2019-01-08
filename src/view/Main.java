@@ -2,6 +2,7 @@ package view;
 
 import java.io.File;
 
+import model.AccessProperties;
 import model.Post;
 import model.SendPost;
 
