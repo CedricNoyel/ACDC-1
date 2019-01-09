@@ -18,12 +18,15 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-
+// 
 package com.hexidec.ekit;
+
+// <!> === STARTING USER INTERFACE AT LINE 106 === <!>
 
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Label;
@@ -36,12 +39,18 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Locale.Category;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,6 +61,11 @@ import javax.swing.border.EmptyBorder;
 
 import com.hexidec.ekit.EkitCore;
 import com.hexidec.ekit.EkitCoreSpell;
+import com.sun.prism.Image;
+
+import jdk.nashorn.internal.runtime.AccessorProperty;
+import model.AccessProperties;
+import model.CategoryManager;
 
 /** Ekit
   * App for editing and saving HTML in a Java text component
@@ -68,12 +82,15 @@ public class Ekit extends JFrame implements WindowListener
 {
 	private EkitCore ekitCore;
 	private JTextField txtfieldTitle;
-	private JTextField txtfieldCateg;
+	private JTextField txtfieldGitrepo;
+	private static JComboBox<String> txtfieldCateg;
 	private JTextField txtfieldAuthor;
+	private JButton btnRemoveCateg;
+	private JButton btnAddCateg;
 	
 	private int WINDOW_SIZE_X = 600;
 	private int WINDOW_SIZE_Y = 700;
-	private Dimension labelSize = new Dimension(80, 15);
+	private Dimension labelSize = new Dimension(80, 25);
 
 	private File currentFile = (File)null;
 
@@ -115,13 +132,31 @@ public class Ekit extends JFrame implements WindowListener
 		this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
 		this.getContentPane().setPreferredSize(new Dimension(WINDOW_SIZE_X, WINDOW_SIZE_Y));
 		
+		// CREATION DES COMPOSANTS DE LA FENETRE
+		createPanelGitRepo();
 		createPanelTitle();
 		createPanelCateg();
 		createPanelAuthor();
+		createEkitContainer(includeToolBar);
+		createSouthPanel();
 		
+		// RECUPERER CONTENU POST
+		// ekitCore.getTextPane().getText();
+
+
+		this.setJMenuBar(ekitCore.getMenuBar());
+		this.addWindowListener(this);
+		this.updateTitle();
+		this.pack();
+		this.setVisible(true);
+	}
+
+	private void createEkitContainer(Boolean includeToolBar) {
+
 		// === EKIT JPANEL ===
 		JPanel ekitContainer = new JPanel();
 		ekitContainer.setLayout(new GridBagLayout());
+		ekitContainer.setBorder(new EmptyBorder(10, 10, 10, 10));
 		this.getContentPane().add(ekitContainer);
 		
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -143,20 +178,6 @@ public class Ekit extends JFrame implements WindowListener
 		gbc.weighty    = 1.0;
 		gbc.gridy      = 3;
 		ekitContainer.add(ekitCore, gbc);
-		
-		
-		// RECUPERER CONTENU POST
-		// ekitCore.getTextPane().getText();
-
-		createSouthPanel();
-
-		this.setJMenuBar(ekitCore.getMenuBar());
-
-		this.addWindowListener(this);
-
-		this.updateTitle();
-		this.pack();
-		this.setVisible(true);
 	}
 
 	private void createPanelAuthor() 
@@ -169,6 +190,7 @@ public class Ekit extends JFrame implements WindowListener
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setBorder(new EmptyBorder(5, 10, 5, 10));
 		lblAuthor.setPreferredSize(labelSize);
+		txtfieldAuthor.setText(AccessProperties.getInstance().getDefaultAuthor());
 		
 		panel.add(lblAuthor);
 		panel.add(txtfieldAuthor);
@@ -176,21 +198,70 @@ public class Ekit extends JFrame implements WindowListener
 		
 	}
 
+	private void createPanelGitRepo() 
+	{
+		ImageIcon icon = new ImageIcon("./src/ressources/edit.png");
+		java.awt.Image img = icon.getImage() ;  
+		java.awt.Image iconEditGitPath = img.getScaledInstance(13, 13, java.awt.Image.SCALE_DEFAULT);
+
+		JPanel panel = new JPanel();
+		JLabel lblGitRepo = new JLabel("Dépot git", SwingConstants.CENTER);
+		JButton btnEditGitPath = new JButton(new ImageIcon(iconEditGitPath));
+		txtfieldGitrepo = new JTextField();
+		txtfieldGitrepo.setText(AccessProperties.getInstance().getLocalRepository());
+
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.setBorder(new EmptyBorder(5, 10, 5, 10));
+		lblGitRepo.setPreferredSize(labelSize);
+
+		ActionListener btnEditGitPathListener = new controller.editGitPathListener(txtfieldGitrepo);
+		btnEditGitPath.addActionListener(btnEditGitPathListener);
+		
+		panel.add(lblGitRepo);
+		panel.add(txtfieldGitrepo);
+		panel.add(btnEditGitPath);
+		this.getContentPane().add(panel, BorderLayout.NORTH);
+	}
+	
 	private void createPanelCateg() 
 	{
-		JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		ImageIcon iconAddCateg = new ImageIcon("./src/ressources/add.png");
+		java.awt.Image img = iconAddCateg.getImage();
+		java.awt.Image imgAddCateg = img.getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH);
 		
+		JPanel panel = new JPanel();
+		btnRemoveCateg = new JButton(new ImageIcon("./src/ressources/delete.png"));
+		btnAddCateg = new JButton(new ImageIcon(imgAddCateg));
 		JLabel lblCateg = new JLabel("Catégorie", SwingConstants.CENTER);
-		txtfieldCateg = new JTextField();
+		txtfieldCateg = new JComboBox<String>();
+		
+		updateCategoriesComboBox();
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setBorder(new EmptyBorder(5, 10, 5, 10));
 		lblCateg.setPreferredSize(labelSize);
+		txtfieldCateg.setEditable(true);
+		btnAddCateg.setToolTipText("Ajouter une catégorie");
+		btnRemoveCateg.setToolTipText("Supprimer la catégorie sélectionnée");
+
+		ActionListener btnAddCategListener = new controller.addCategListener(txtfieldCateg);
+		btnAddCateg.addActionListener(btnAddCategListener);
+
+		ActionListener btnRmvCategListener = new controller.rmvCategListener(txtfieldCateg);
+		btnRemoveCateg.addActionListener(btnRmvCategListener);
 		
 		panel.add(lblCateg);
 		panel.add(txtfieldCateg);
+		panel.add(btnAddCateg);
+		panel.add(btnRemoveCateg);
 		this.getContentPane().add(panel, BorderLayout.NORTH);
+	}
+	
+	public static void updateCategoriesComboBox() {
+		txtfieldCateg.removeAllItems();
+		for(String categ : CategoryManager.getCategories()) {
+			txtfieldCateg.addItem(categ);
+		}
 	}
 
 	private void createPanelTitle() 
@@ -210,20 +281,22 @@ public class Ekit extends JFrame implements WindowListener
 	}
 	
 	private void createSouthPanel() {
+
+		JPanel panel = new JPanel();
 		
 		JButton btnPreview = new JButton("Voir l'aperçu");
-		JButton btnValid = new JButton("Valider");
-		JPanel panel = new JPanel();
+		JButton btnValid = new JButton("Envoyer la news");
 		
 		panel.setLayout(new BorderLayout());
 		panel.setBorder(new EmptyBorder(10, 30, 10, 30));
 		
 		ActionListener btnValidListener = new controller.btnValiderListener(txtfieldTitle, txtfieldCateg, txtfieldAuthor, ekitCore.getTextPane());
 		btnValid.addActionListener(btnValidListener);
-
+		ActionListener btnPreviewListener = new controller.btnPreviewListener(txtfieldTitle, txtfieldCateg, txtfieldAuthor, ekitCore.getTextPane());
+		btnPreview.addActionListener(btnPreviewListener);
 		
-		panel.add(btnPreview);
-		panel.add(btnValid);
+		panel.add(btnPreview, BorderLayout.NORTH);
+		panel.add(btnValid, BorderLayout.SOUTH);
 
 		this.getContentPane().add(panel);
 	}

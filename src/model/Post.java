@@ -32,7 +32,7 @@ public class Post {
 	 * @return The file name used when generating the post
 	 */
 	public String getFileName(){
-		return getDate() + '-' + getTitle().replace(' ', '-') + ".html";
+		return getDate() + '-' + getTitle().replace(' ', '-') + ".markdown";
 	}
 
 	public String getTitle() {

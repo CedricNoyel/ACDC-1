@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import view.Main;
-
 /**
  * Manages website linked services
  * 

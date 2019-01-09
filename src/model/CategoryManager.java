@@ -19,10 +19,17 @@ import java.util.Scanner;
  */
 public class CategoryManager {
 	
-	private final static String FILE_PATH = AccessProperties.getInstance().getLocalRepository() 
+	private static String FILE_PATH = AccessProperties.getInstance().getLocalRepository() 
 			+ File.separator + "BLOG" + File.separator + "category" + File.separator + "categories.txt";
-
-	public static ArrayList<String> getCategories(){
+	
+	public static void updateFilePath() 
+	{
+		FILE_PATH = AccessProperties.getInstance().getLocalRepository() 
+				+ File.separator + "BLOG" + File.separator + "category" + File.separator + "categories.txt";
+	}
+	
+	public static ArrayList<String> getCategories()
+	{
 		ArrayList<String> categories = new ArrayList<String>();
 		
 		try {

@@ -15,8 +15,9 @@ public class MarkdownGenerator {
 					"categories: " + post.getCategory() + "\n" +
 					"---\n" +
 					"<br />" +
-					"<i>By " + post.getAuthor() + "</i><br />" +
-					"<br />" +
+					"**By " + post.getAuthor() + "**"
+					+ "<br />" +
+					"<br /><br />" +
 					post.getContent();
 		
 		return md;
