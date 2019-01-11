@@ -14,8 +14,6 @@ public class AccessProperties {
 	private static AccessProperties SINGLETON = null;
 
 	public static String LOCAL_REPOSITORY = "localRepository";
-	public static String GIT_USER = "gitUser";
-	public static String GIT_PASSWORD = "gitPassword";
 	public static String DEFAULT_AUTHOR = "defaultAuthor";
 
 	ArrayList<String> result = new ArrayList<>();
@@ -38,30 +36,14 @@ public class AccessProperties {
 		return result.get(0);
 	}
 
-	public String getGitUser() {
-		return result.get(1);
-	}
-
-	public String getGitPassword() {
-		return result.get(2);
-	}
-
 	public String getDefaultAuthor() {
-		return result.get(3);
+		return result.get(1);
 	}
 
 	public void updateLocalRepository(String value) {
 		result.remove(0);
 		result.add(0, value);
 		this.updatePropertyValue(AccessProperties.LOCAL_REPOSITORY, value);
-	}
-
-	public void updateGitUser(String value) {
-		this.updatePropertyValue(AccessProperties.GIT_USER, value);
-	}
-
-	public void updateGitPassword(String value) {
-		this.updatePropertyValue(AccessProperties.GIT_PASSWORD, value);
 	}
 
 	public void updateDefaultAuthor(String value) {
@@ -82,8 +64,6 @@ public class AccessProperties {
 			}
 
 			result.add(prop.getProperty(AccessProperties.LOCAL_REPOSITORY));
-			result.add(prop.getProperty(AccessProperties.GIT_USER));
-			result.add(prop.getProperty(AccessProperties.GIT_PASSWORD));
 			result.add(prop.getProperty(AccessProperties.DEFAULT_AUTHOR));
 
 		} catch (Exception e) {

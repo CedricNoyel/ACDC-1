@@ -21,11 +21,11 @@ public class Post {
 	* @param author Author of the post
 	 */
 	public Post(String title, String date, String category, String content, String author){
-		this.title = title;
-		this.date = date;
-		this.category = category;
+		this.title = Tools.deAccent(title);
+		this.date = Tools.deAccent(date);
+		this.category = Tools.deAccent(category);
 		this.content = content;
-		this.author = author;
+		this.author = Tools.deAccent(author);
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class Post {
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this.title = Tools.deAccent(title);
 	}
 
 	public String getDate() {
@@ -56,7 +56,7 @@ public class Post {
 	}
 
 	public void setCategory(String category) {
-		this.category = category;
+		this.category = Tools.deAccent(category);
 	}
 
 	public String getContent() {
@@ -72,7 +72,7 @@ public class Post {
 	}
 
 	public void setAuthor(String author) {
-		this.author = author;
+		this.author = Tools.deAccent(author);
 	}
 
 }

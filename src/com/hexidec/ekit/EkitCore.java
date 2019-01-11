@@ -109,6 +109,9 @@ import com.hexidec.ekit.action.*;
 import com.hexidec.ekit.component.*;
 import com.hexidec.util.Base64Codec;
 import com.hexidec.util.Translatrix;
+
+import sun.util.resources.cldr.ss.CurrencyNames_ss;
+
 import com.hexidec.ekit.thirdparty.print.DocumentRenderer;
 
 /** EkitCore
@@ -171,6 +174,8 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 	private JButtonNoFocus jbtnInsertColumn;
 	private JButtonNoFocus jbtnDeleteRow;
 	private JButtonNoFocus jbtnDeleteColumn;
+	private JButtonNoFocus jbtnAddImg;
+	private JButtonNoFocus jbtnAddImgFromFolder;
 	private JToggleButtonNoFocus jtbtnViewSource;
 	private JComboBoxNoFocus jcmbStyleSelector;
 	private JComboBoxNoFocus jcmbFontSelector;
@@ -194,6 +199,8 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 	private AlignAction actionAlignRight;
 	private AlignAction actionAlignJustified;
 	private CustomAction actionInsertAnchor;
+	private CustomAction actionAddImg;
+	private CustomAction actionAddImgFromFolder;
 
 	protected UndoManager undoMngr;
 	protected UndoAction undoAction;
@@ -626,7 +633,9 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 		actionAlignRight      = new AlignAction(this, Translatrix.getTranslationString("AlignRight"), StyleConstants.ALIGN_RIGHT);
 		actionAlignJustified  = new AlignAction(this, Translatrix.getTranslationString("AlignJustified"), StyleConstants.ALIGN_JUSTIFIED);
 		actionInsertAnchor    = new CustomAction(this, Translatrix.getTranslationString("InsertAnchor") + menuDialog, HTML.Tag.A);
-
+		actionAddImg    	  = new CustomAction(this, Translatrix.getTranslationString("AddImage") + menuDialog, HTML.Tag.A);
+		actionAddImgFromFolder = new CustomAction(this, Translatrix.getTranslationString("AddImage"), HTML.Tag.A);
+		
 		/* Build the menus */
 		/* FILE Menu */
 		jMenuFile              = new JMenu(Translatrix.getTranslationString("File"));
@@ -722,53 +731,53 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 
 		/* FONT Menu */
 		jMenuFont              = new JMenu(Translatrix.getTranslationString("Font"));
-		htMenus.put(KEY_MENU_FONT, jMenuFont);
-		JMenuItem jmiBold      = new JMenuItem(actionFontBold);      jmiBold.setText(Translatrix.getTranslationString("FontBold"));           jmiBold.setAccelerator(KeyStroke.getKeyStroke('B', CTRLKEY, false));      if(showMenuIcons) { jmiBold.setIcon(getEkitIcon("Bold")); }           jMenuFont.add(jmiBold);
-		JMenuItem jmiItalic    = new JMenuItem(actionFontItalic);    jmiItalic.setText(Translatrix.getTranslationString("FontItalic"));       jmiItalic.setAccelerator(KeyStroke.getKeyStroke('I', CTRLKEY, false));    if(showMenuIcons) { jmiItalic.setIcon(getEkitIcon("Italic")); }       jMenuFont.add(jmiItalic);
-		JMenuItem jmiUnderline = new JMenuItem(actionFontUnderline); jmiUnderline.setText(Translatrix.getTranslationString("FontUnderline")); jmiUnderline.setAccelerator(KeyStroke.getKeyStroke('U', CTRLKEY, false)); if(showMenuIcons) { jmiUnderline.setIcon(getEkitIcon("Underline")); } jMenuFont.add(jmiUnderline);
-		JMenuItem jmiStrike    = new JMenuItem(actionFontStrike);    jmiStrike.setText(Translatrix.getTranslationString("FontStrike"));                                                                                 if(showMenuIcons) { jmiStrike.setIcon(getEkitIcon("Strike")); }       jMenuFont.add(jmiStrike);
-		JMenuItem jmiSupscript = new JMenuItem(actionFontSuperscript); if(showMenuIcons) { jmiSupscript.setIcon(getEkitIcon("Super")); } jMenuFont.add(jmiSupscript);
-		JMenuItem jmiSubscript = new JMenuItem(actionFontSubscript);   if(showMenuIcons) { jmiSubscript.setIcon(getEkitIcon("Sub")); }   jMenuFont.add(jmiSubscript);
-		jMenuFont.addSeparator();
-		jMenuFont.add(new JMenuItem(new FormatAction(this, Translatrix.getTranslationString("FormatBig"), HTML.Tag.BIG)));
-		jMenuFont.add(new JMenuItem(new FormatAction(this, Translatrix.getTranslationString("FormatSmall"), HTML.Tag.SMALL)));
-		JMenu jMenuFontSize = new JMenu(Translatrix.getTranslationString("FontSize"));
-			jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize1"), 8)));
-			jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize2"), 10)));
-			jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize3"), 12)));
-			jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize4"), 14)));
-			jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize5"), 18)));
-			jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize6"), 24)));
-			jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize7"), 32)));
-		jMenuFont.add(jMenuFontSize);
-		jMenuFont.addSeparator();
-		JMenu jMenuFontSub      = new JMenu(Translatrix.getTranslationString("Font"));
-		JMenuItem jmiSelectFont = new JMenuItem(actionSelectFont);                              jmiSelectFont.setText(Translatrix.getTranslationString("FontSelect") + menuDialog); if(showMenuIcons) { jmiSelectFont.setIcon(getEkitIcon("FontFaces")); }      jMenuFontSub.add(jmiSelectFont);
-		JMenuItem jmiSerif      = new JMenuItem((Action)actions.get("font-family-Serif"));      jmiSerif.setText(Translatrix.getTranslationString("FontSerif"));                    jMenuFontSub.add(jmiSerif);
-		JMenuItem jmiSansSerif  = new JMenuItem((Action)actions.get("font-family-SansSerif"));  jmiSansSerif.setText(Translatrix.getTranslationString("FontSansserif"));            jMenuFontSub.add(jmiSansSerif);
-		JMenuItem jmiMonospaced = new JMenuItem((Action)actions.get("font-family-Monospaced")); jmiMonospaced.setText(Translatrix.getTranslationString("FontMonospaced"));          jMenuFontSub.add(jmiMonospaced);
-		jMenuFont.add(jMenuFontSub);
-		jMenuFont.addSeparator();
-		JMenu jMenuFontColor = new JMenu(Translatrix.getTranslationString("Color"));
-			Hashtable<String, String> customAttr = new Hashtable<String, String>(); customAttr.put("color", "black");
-			jMenuFontColor.add(new JMenuItem(new CustomAction(this, Translatrix.getTranslationString("CustomColor") + menuDialog, HTML.Tag.FONT, customAttr)));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorAqua"),    new Color(  0,255,255))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorBlack"),   new Color(  0,  0,  0))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorBlue"),    new Color(  0,  0,255))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorFuschia"), new Color(255,  0,255))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorGray"),    new Color(128,128,128))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorGreen"),   new Color(  0,128,  0))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorLime"),    new Color(  0,255,  0))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorMaroon"),  new Color(128,  0,  0))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorNavy"),    new Color(  0,  0,128))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorOlive"),   new Color(128,128,  0))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorPurple"),  new Color(128,  0,128))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorRed"),     new Color(255,  0,  0))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorSilver"),  new Color(192,192,192))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorTeal"),    new Color(  0,128,128))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorWhite"),   new Color(255,255,255))));
-			jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorYellow"),  new Color(255,255,  0))));
-		jMenuFont.add(jMenuFontColor);
+	htMenus.put(KEY_MENU_FONT, jMenuFont);
+	JMenuItem jmiBold      = new JMenuItem(actionFontBold);      jmiBold.setText(Translatrix.getTranslationString("FontBold"));           jmiBold.setAccelerator(KeyStroke.getKeyStroke('B', CTRLKEY, false));      if(showMenuIcons) { jmiBold.setIcon(getEkitIcon("Bold")); }           jMenuFont.add(jmiBold);
+	JMenuItem jmiItalic    = new JMenuItem(actionFontItalic);    jmiItalic.setText(Translatrix.getTranslationString("FontItalic"));       jmiItalic.setAccelerator(KeyStroke.getKeyStroke('I', CTRLKEY, false));    if(showMenuIcons) { jmiItalic.setIcon(getEkitIcon("Italic")); }       jMenuFont.add(jmiItalic);
+	JMenuItem jmiUnderline = new JMenuItem(actionFontUnderline); jmiUnderline.setText(Translatrix.getTranslationString("FontUnderline")); jmiUnderline.setAccelerator(KeyStroke.getKeyStroke('U', CTRLKEY, false)); if(showMenuIcons) { jmiUnderline.setIcon(getEkitIcon("Underline")); } jMenuFont.add(jmiUnderline);
+	JMenuItem jmiStrike    = new JMenuItem(actionFontStrike);    jmiStrike.setText(Translatrix.getTranslationString("FontStrike"));                                                                                 if(showMenuIcons) { jmiStrike.setIcon(getEkitIcon("Strike")); }       jMenuFont.add(jmiStrike);
+	JMenuItem jmiSupscript = new JMenuItem(actionFontSuperscript); if(showMenuIcons) { jmiSupscript.setIcon(getEkitIcon("Super")); } jMenuFont.add(jmiSupscript);
+	JMenuItem jmiSubscript = new JMenuItem(actionFontSubscript);   if(showMenuIcons) { jmiSubscript.setIcon(getEkitIcon("Sub")); }   jMenuFont.add(jmiSubscript);
+	jMenuFont.addSeparator();
+	jMenuFont.add(new JMenuItem(new FormatAction(this, Translatrix.getTranslationString("FormatBig"), HTML.Tag.BIG)));
+	jMenuFont.add(new JMenuItem(new FormatAction(this, Translatrix.getTranslationString("FormatSmall"), HTML.Tag.SMALL)));
+	JMenu jMenuFontSize = new JMenu(Translatrix.getTranslationString("FontSize"));
+		jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize1"), 8)));
+		jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize2"), 10)));
+		jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize3"), 12)));
+		jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize4"), 14)));
+		jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize5"), 18)));
+		jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize6"), 24)));
+		jMenuFontSize.add(new JMenuItem(new StyledEditorKit.FontSizeAction(Translatrix.getTranslationString("FontSize7"), 32)));
+	jMenuFont.add(jMenuFontSize);
+	jMenuFont.addSeparator();
+	JMenu jMenuFontSub      = new JMenu(Translatrix.getTranslationString("Font"));
+	JMenuItem jmiSelectFont = new JMenuItem(actionSelectFont);                              jmiSelectFont.setText(Translatrix.getTranslationString("FontSelect") + menuDialog); if(showMenuIcons) { jmiSelectFont.setIcon(getEkitIcon("FontFaces")); }      jMenuFontSub.add(jmiSelectFont);
+	JMenuItem jmiSerif      = new JMenuItem((Action)actions.get("font-family-Serif"));      jmiSerif.setText(Translatrix.getTranslationString("FontSerif"));                    jMenuFontSub.add(jmiSerif);
+	JMenuItem jmiSansSerif  = new JMenuItem((Action)actions.get("font-family-SansSerif"));  jmiSansSerif.setText(Translatrix.getTranslationString("FontSansserif"));            jMenuFontSub.add(jmiSansSerif);
+	JMenuItem jmiMonospaced = new JMenuItem((Action)actions.get("font-family-Monospaced")); jmiMonospaced.setText(Translatrix.getTranslationString("FontMonospaced"));          jMenuFontSub.add(jmiMonospaced);
+	jMenuFont.add(jMenuFontSub);
+	jMenuFont.addSeparator();
+	JMenu jMenuFontColor = new JMenu(Translatrix.getTranslationString("Color"));
+		Hashtable<String, String> customAttr = new Hashtable<String, String>(); customAttr.put("color", "black");
+		jMenuFontColor.add(new JMenuItem(new CustomAction(this, Translatrix.getTranslationString("CustomColor") + menuDialog, HTML.Tag.FONT, customAttr)));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorAqua"),    new Color(  0,255,255))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorBlack"),   new Color(  0,  0,  0))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorBlue"),    new Color(  0,  0,255))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorFuschia"), new Color(255,  0,255))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorGray"),    new Color(128,128,128))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorGreen"),   new Color(  0,128,  0))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorLime"),    new Color(  0,255,  0))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorMaroon"),  new Color(128,  0,  0))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorNavy"),    new Color(  0,  0,128))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorOlive"),   new Color(128,128,  0))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorPurple"),  new Color(128,  0,128))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorRed"),     new Color(255,  0,  0))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorSilver"),  new Color(192,192,192))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorTeal"),    new Color(  0,128,128))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorWhite"),   new Color(255,255,255))));
+		jMenuFontColor.add(new JMenuItem(new StyledEditorKit.ForegroundAction(Translatrix.getTranslationString("ColorYellow"),  new Color(255,255,  0))));
+	jMenuFont.add(jMenuFontColor);
 
 		/* FORMAT Menu */
 		jMenuFormat            = new JMenu(Translatrix.getTranslationString("Format"));
@@ -884,10 +893,10 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 //		jMenuBar.add(jMenuFile);
 //		jMenuBar.add(jMenuEdit);
 //		jMenuBar.add(jMenuView);
-		jMenuBar.add(jMenuFont);
-		jMenuBar.add(jMenuFormat);
+//		jMenuBar.add(jMenuFont);
+//		jMenuBar.add(jMenuFormat);
 //		jMenuBar.add(jMenuSearch);
-		jMenuBar.add(jMenuInsert);
+//		jMenuBar.add(jMenuInsert);
 //		jMenuBar.add(jMenuTable);
 //		jMenuBar.add(jMenuForms);
 		if(jMenuTools != null) { jMenuBar.add(jMenuTools); }
@@ -1024,22 +1033,22 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 			jbtnAlignLeft.setIcon(getEkitIcon("AlignLeft"));
 			jbtnAlignLeft.setText(null);
 			jbtnAlignLeft.setToolTipText(Translatrix.getTranslationString("AlignLeft"));
-			htTools.put(KEY_TOOL_ALIGNL, jbtnAlignLeft);
+			// htTools.put(KEY_TOOL_ALIGNL, jbtnAlignLeft);
 		jbtnAlignCenter = new JButtonNoFocus(actionAlignCenter);
 			jbtnAlignCenter.setIcon(getEkitIcon("AlignCenter"));
 			jbtnAlignCenter.setText(null);
 			jbtnAlignCenter.setToolTipText(Translatrix.getTranslationString("AlignCenter"));
-			htTools.put(KEY_TOOL_ALIGNC, jbtnAlignCenter);
+			// htTools.put(KEY_TOOL_ALIGNC, jbtnAlignCenter);
 		jbtnAlignRight = new JButtonNoFocus(actionAlignRight);
 			jbtnAlignRight.setIcon(getEkitIcon("AlignRight"));
 			jbtnAlignRight.setText(null);
 			jbtnAlignRight.setToolTipText(Translatrix.getTranslationString("AlignRight"));
-			htTools.put(KEY_TOOL_ALIGNR, jbtnAlignRight);
+			// htTools.put(KEY_TOOL_ALIGNR, jbtnAlignRight);
 		jbtnAlignJustified = new JButtonNoFocus(actionAlignJustified);
 			jbtnAlignJustified.setIcon(getEkitIcon("AlignJustified"));
 			jbtnAlignJustified.setText(null);
 			jbtnAlignJustified.setToolTipText(Translatrix.getTranslationString("AlignJustified"));
-			htTools.put(KEY_TOOL_ALIGNJ, jbtnAlignJustified);
+			// htTools.put(KEY_TOOL_ALIGNJ, jbtnAlignJustified);
 		jbtnUnicode = new JButtonNoFocus();
 			jbtnUnicode.setActionCommand(CMD_INSERT_UNICODE_CHAR);
 			jbtnUnicode.addActionListener(this);
@@ -1074,7 +1083,7 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 			jtbtnViewSource.setPreferredSize(jbtnAnchor.getPreferredSize());
 			jtbtnViewSource.setMinimumSize(jbtnAnchor.getMinimumSize());
 			jtbtnViewSource.setMaximumSize(jbtnAnchor.getMaximumSize());
-			htTools.put(KEY_TOOL_SOURCE, jtbtnViewSource);
+			// htTools.put(KEY_TOOL_SOURCE, jtbtnViewSource);
 		jcmbStyleSelector = new JComboBoxNoFocus();
 			jcmbStyleSelector.setToolTipText(Translatrix.getTranslationString("PickCSSStyle"));
 			jcmbStyleSelector.setAction(new StylesAction(jcmbStyleSelector));
@@ -1089,7 +1098,7 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 			Collections.sort(vcFontnames);
 			jcmbFontSelector = new JComboBoxNoFocus(vcFontnames);
 			jcmbFontSelector.setAction(new SetFontFamilyAction(this, "[EKITFONTSELECTOR]"));
-//			htTools.put(KEY_TOOL_FONTS, jcmbFontSelector);
+			htTools.put(KEY_TOOL_FONTS, jcmbFontSelector);
 		jbtnInsertTable = new JButtonNoFocus();
 			jbtnInsertTable.setActionCommand(CMD_TABLE_INSERT);
 			jbtnInsertTable.addActionListener(this);
@@ -1139,6 +1148,16 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 			jbtnDeleteColumn.setText(null);
 			jbtnDeleteColumn.setToolTipText(Translatrix.getTranslationString("DeleteTableColumn"));
 			htTools.put(KEY_TOOL_DELETECOL, jbtnDeleteColumn);
+		jbtnAddImg = new JButtonNoFocus(new ImageIcon("./src/ressources/picture.png"));
+			jbtnAddImg.setToolTipText("Add image from url");
+			jbtnAddImg.setActionCommand(CMD_INSERT_IMAGE_URL);
+			jbtnAddImg.addActionListener(this);
+			htTools.put(KEY_TOOL_SOURCE, jbtnAddImg);
+		jbtnAddImgFromFolder = new JButtonNoFocus(new ImageIcon("./src/ressources/picture_folder.png"));
+			jbtnAddImgFromFolder.setToolTipText("Add a local image");
+			jbtnAddImgFromFolder.setActionCommand(CMD_INSERT_IMAGE_LOCAL);
+			jbtnAddImgFromFolder.addActionListener(this);
+			htTools.put(KEY_TOOL_STYLES, jbtnAddImgFromFolder);
 
 		/* Create the toolbar */
 		if(multiBar)
@@ -3169,8 +3188,8 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 			}
 		}
 
-		customizeToolBar(TOOLBAR_MAIN,   vcToolPicks.get(0), true);
-		customizeToolBar(TOOLBAR_FORMAT, vcToolPicks.get(1), true);
+		customizeToolBar(TOOLBAR_FORMAT,   vcToolPicks.get(1), true);
+		customizeToolBar(TOOLBAR_MAIN, vcToolPicks.get(0), true);
 		customizeToolBar(TOOLBAR_STYLES, vcToolPicks.get(2), true);
 	}
 

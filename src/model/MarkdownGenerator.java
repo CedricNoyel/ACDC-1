@@ -14,14 +14,12 @@ public class MarkdownGenerator {
 					"date: " + post.getDate() + "\n" +
 					"categories: " + post.getCategory() + "\n" +
 					"---\n" +
-					"<br />" +
-					"**By " + post.getAuthor() + "**"
-					+ "<br />" +
-					"<br /><br />" +
+					"\n" +
+					"*By " + post.getAuthor() + "*\n" +
+					"\n" +
 					post.getContent();
-		
 		return md;
-	}
+}
 	
 	public static String mdUrl(String text, String url){
 		return String.format("[%s](%s)", text, url); 

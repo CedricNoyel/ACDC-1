@@ -26,7 +26,7 @@ public class WebsiteRunner implements Runnable{
 			String s = null;
 			while((s = rtOutput.readLine()) != null) {}
 
-			System.out.println("Sorti 2");
+			// System.out.println("Sorti 2");
 
 		} catch (IOException e) {}
 	}

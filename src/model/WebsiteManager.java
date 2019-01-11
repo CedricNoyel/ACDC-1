@@ -77,9 +77,11 @@ public class WebsiteManager {
 	/**
 	 * Closes the demo of the website if it is open
 	 */
-	public static void closeDemo(){
+	public static void closeDemo()
+	{
 		if(webRunner.isAlive() && proc != null){
 			proc.destroy();
+			Tools.executeCmd("taskkill /IM \"ruby.exe\" /F", System.getProperty("user.dir"));
 		} else {
 			ErrorManager.sendError("The demo is not running.");
 		}
