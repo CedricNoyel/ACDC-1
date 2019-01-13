@@ -17,21 +17,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 package com.hexidec.ekit;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.BorderLayout;
-import java.awt.Button;
-import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.Label;
-import java.awt.TextField;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -54,6 +41,7 @@ import com.hexidec.ekit.EkitCoreSpell;
 
 import model.AccessProperties;
 import model.CategoryManager;
+import model.Tools;
 import model.WebsiteManager;
 
 import javax.swing.border.EmptyBorder;
@@ -135,6 +123,7 @@ public class Ekit extends JFrame implements WindowListener
 		createSouthPanel();
 		initTxtfields();
 
+		this.setJMenuBar(ekitCore.getMenuBar());
 		this.addWindowListener(this);
 		this.updateTitle();
 		this.pack();
@@ -145,7 +134,7 @@ public class Ekit extends JFrame implements WindowListener
 		txtfieldGitrepo.setText(AccessProperties.getInstance().getLocalRepository());
 		txtfieldTitle.setText("");
 		Ekit.updateCategoriesComboBox();
-		txtfieldAuthor.setText(AccessProperties.getInstance().getDefaultAuthor());
+		txtfieldAuthor.setText(AccessProperties.getInstance().getDefaultAuthor().toString());
 		ekitCore.getTextPane().setText("");
 	}
 
@@ -163,6 +152,7 @@ public class Ekit extends JFrame implements WindowListener
 	public void windowClosing(WindowEvent we)
 	{
 		WebsiteManager.closeDemo();
+		Tools.executeCmd("git clean -f", AccessProperties.getInstance().getLocalRepository());
         this.dispose();
     	System.exit(0);
 	}
@@ -309,7 +299,7 @@ public class Ekit extends JFrame implements WindowListener
 
 	private void createPanelGitRepo() 
 	{		
-		ImageIcon icon = new ImageIcon("./src/ressources/edit.png");
+		ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("edit.png"));
 		java.awt.Image img = icon.getImage();
 		java.awt.Image iconEdit = img.getScaledInstance(16, 20, java.awt.Image.SCALE_SMOOTH);
 
@@ -334,12 +324,12 @@ public class Ekit extends JFrame implements WindowListener
 
 	private void createPanelCateg() 
 	{
-		ImageIcon iconAddCateg = new ImageIcon("./src/ressources/add.png");
+		ImageIcon iconAddCateg = new ImageIcon(getClass().getClassLoader().getResource("add.png"));
 		java.awt.Image img = iconAddCateg.getImage();
 		java.awt.Image imgAddCateg = img.getScaledInstance(16, 16, java.awt.Image.SCALE_SMOOTH);
 
 		JPanel panel = new JPanel();
-		btnRemoveCateg = new JButton(new ImageIcon("./src/ressources/delete.png"));
+		btnRemoveCateg = new JButton(new ImageIcon(getClass().getClassLoader().getResource("delete.png")));
 		btnAddCateg = new JButton(new ImageIcon(imgAddCateg));
 		lblCateg = new JLabel("Catégorie", SwingConstants.CENTER);
 		txtfieldCateg = new JComboBox<String>();
@@ -398,7 +388,7 @@ public class Ekit extends JFrame implements WindowListener
 
 		ActionListener btnValidListener = new controller.btnValiderListener(btnValid, txtfieldTitle, txtfieldCateg, txtfieldAuthor, ekitCore.getTextPane(), txtfieldGitrepo);
 		btnValid.addActionListener(btnValidListener);
-		ActionListener btnPreviewListener = new controller.btnPreviewListener(btnPreview, txtfieldTitle, txtfieldCateg, txtfieldAuthor, ekitCore.getTextPane());
+		ActionListener btnPreviewListener = new controller.btnPreviewListener(btnPreview, txtfieldTitle, txtfieldCateg, txtfieldAuthor, ekitCore.getTextPane(), txtfieldGitrepo);
 		btnPreview.addActionListener(btnPreviewListener);
 
 		panel.add(btnPreview);

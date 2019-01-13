@@ -51,7 +51,7 @@ public class AccessProperties {
 	}
 
 	public ArrayList<String> getPropValues() {
-		String propFileName = "./ressources/config.properties";
+		String propFileName = "config.properties";
 		Properties prop = new Properties();
 
 		try {
@@ -81,13 +81,13 @@ public class AccessProperties {
 	private void updatePropertyValue(String key, String value) {
 		Properties props = new Properties();
 
-		String propsFileName = "./src" + File.separator + "ressources" + File.separator + "config.properties";
+		String propsFileName = "config.properties";
 		try {
 					
 			//first load old one:
-			FileInputStream configStream = new FileInputStream(propsFileName);
-			props.load(configStream);
-			configStream.close();
+			inputStream = getClass().getClassLoader().getResourceAsStream(propsFileName);
+			props.load(inputStream);
+			inputStream.close();
 
 			//modifies existing or adds new property
 			props.setProperty(key, value);

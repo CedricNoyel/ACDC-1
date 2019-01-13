@@ -50,14 +50,19 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.StringWriter;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
 import javax.swing.AbstractAction;
@@ -103,6 +108,9 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 import javax.swing.text.rtf.RTFEditorKit;
 import javax.swing.undo.UndoManager;
+
+import org.eclipse.jgit.util.FileUtils;
+
 import javax.swing.undo.CannotUndoException;
 
 import com.hexidec.ekit.action.*;
@@ -110,6 +118,7 @@ import com.hexidec.ekit.component.*;
 import com.hexidec.util.Base64Codec;
 import com.hexidec.util.Translatrix;
 
+import model.AccessProperties;
 import sun.util.resources.cldr.ss.CurrencyNames_ss;
 
 import com.hexidec.ekit.thirdparty.print.DocumentRenderer;
@@ -890,15 +899,15 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 
 		/* Create menubar and add menus */
 		jMenuBar = new JMenuBar();
-//		jMenuBar.add(jMenuFile);
-//		jMenuBar.add(jMenuEdit);
-//		jMenuBar.add(jMenuView);
-//		jMenuBar.add(jMenuFont);
-//		jMenuBar.add(jMenuFormat);
+		jMenuBar.add(jMenuFile);
+		jMenuBar.add(jMenuEdit);
+		jMenuBar.add(jMenuView);
+		jMenuBar.add(jMenuFont);
+		jMenuBar.add(jMenuFormat);
 //		jMenuBar.add(jMenuSearch);
-//		jMenuBar.add(jMenuInsert);
-//		jMenuBar.add(jMenuTable);
-//		jMenuBar.add(jMenuForms);
+		jMenuBar.add(jMenuInsert);
+		jMenuBar.add(jMenuTable);
+		jMenuBar.add(jMenuForms);
 		if(jMenuTools != null) { jMenuBar.add(jMenuTools); }
 //		jMenuBar.add(jMenuHelp);
 		if(debugMode)
@@ -1148,12 +1157,12 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 			jbtnDeleteColumn.setText(null);
 			jbtnDeleteColumn.setToolTipText(Translatrix.getTranslationString("DeleteTableColumn"));
 			htTools.put(KEY_TOOL_DELETECOL, jbtnDeleteColumn);
-		jbtnAddImg = new JButtonNoFocus(new ImageIcon("./src/ressources/picture.png"));
+		jbtnAddImg = new JButtonNoFocus(new ImageIcon(getClass().getClassLoader().getResource("picture.png")));
 			jbtnAddImg.setToolTipText("Add image from url");
 			jbtnAddImg.setActionCommand(CMD_INSERT_IMAGE_URL);
 			jbtnAddImg.addActionListener(this);
 			htTools.put(KEY_TOOL_SOURCE, jbtnAddImg);
-		jbtnAddImgFromFolder = new JButtonNoFocus(new ImageIcon("./src/ressources/picture_folder.png"));
+		jbtnAddImgFromFolder = new JButtonNoFocus(new ImageIcon(getClass().getClassLoader().getResource("picture_folder.png")));
 			jbtnAddImgFromFolder.setToolTipText("Add a local image");
 			jbtnAddImgFromFolder.setActionCommand(CMD_INSERT_IMAGE_LOCAL);
 			jbtnAddImgFromFolder.addActionListener(this);
@@ -2642,18 +2651,18 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 
 	/** Method for inserting an image from a file
 	  */
-	private void insertLocalImage(File whatImage)
-	throws IOException, BadLocationException, RuntimeException
+	private void insertLocalImage(File whatImage) throws IOException, BadLocationException, RuntimeException
 	{
 		if(whatImage == null)
 		{
 			getImageFromChooser(imageChooserStartDir, extsIMG, Translatrix.getTranslationString("FiletypeIMG"));
+
 		}
 		else
 		{
 			imageChooserStartDir = whatImage.getParent().toString();
 			int caretPos = jtpMain.getCaretPosition();
-			htmlKit.insertHTML(htmlDoc, caretPos, "<IMG SRC=\"" + whatImage + "\">", 0, 0, HTML.Tag.IMG);
+			htmlKit.insertHTML(htmlDoc, caretPos, "<IMG SRC=\"../../../../images-blog/" + whatImage.getName() + "\">", 0, 0, HTML.Tag.IMG);
 			jtpMain.setCaretPosition(caretPos + 1);
 			refreshOnUpdate();
 		}
@@ -3059,9 +3068,20 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 				File whatImage = imgFileDialog.getImageFile();
 				if(whatImage != null)
 				{
+
+			        File srcFile = new File(whatImage.getParentFile() + File.separator + whatImage.getName());
+		    	    String dstFile = AccessProperties.getInstance().getLocalRepository() + File.separator + 
+			        		"BLOG" + File.separator + "images-blog" + File.separator + whatImage.getName();
+		    	    
+		    	    InputStream fileContent = new FileInputStream(srcFile);
+		    	    Path img_destination = Paths.get(dstFile);
+		    	    if (!Files.exists(img_destination)) {
+			    	    Files.copy(fileContent,img_destination);
+		    	    }
+		    	  
 					imageChooserStartDir = whatImage.getParent().toString();
 					int caretPos = jtpMain.getCaretPosition();
-					String sImgTag = "<img src=\"" + whatImage + '"';
+					String sImgTag = "<img src=\"../../../../images-blog/" + whatImage.getName() + '"';
 					if(imgFileDialog.getImageAlt() != null && imgFileDialog.getImageAlt().length() > 0) { sImgTag = sImgTag + " alt=\"" + imgFileDialog.getImageAlt() + '"'; }
 					if(imgFileDialog.getImageWidth() != null && imgFileDialog.getImageWidth().length() > 0) { sImgTag = sImgTag + " width=\"" + imgFileDialog.getImageWidth() + '"'; }
 					if(imgFileDialog.getImageHeight() != null && imgFileDialog.getImageHeight().length() > 0) { sImgTag = sImgTag + " height=\"" + imgFileDialog.getImageHeight() + '"'; }

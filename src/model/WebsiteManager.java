@@ -70,8 +70,7 @@ public class WebsiteManager {
 			webRunner.start();
 		} catch (IOException e) {
 			ErrorManager.sendError("Error while starting the demo." + e);
-		}
-		
+		}		
 	}
 	
 	/**

@@ -4,9 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
@@ -38,19 +40,34 @@ public class btnValiderListener implements ActionListener
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		WebsiteManager.closeDemo();
-		
-		btnValid.setEnabled(false);
-		btnValid.setText("Publication du post en cours");
-		
-		String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-		Post post = new Post(textfieldTitle.getText(),	todayDate, textfieldCateg.getSelectedItem().toString(), textfieldText.getText(), textfieldAuthor.getText());
+		if (btnPreviewListener.areFieldsOk()) 
+		{
+			WebsiteManager.closeDemo();
+			Tools.executeCmd("git clean -f", AccessProperties.getInstance().getLocalRepository());
+			
+			btnValid.setEnabled(false);
+			btnValid.setText("Publication du post en cours");
+			
+			String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+			Post post = new Post(textfieldTitle.getText(),	todayDate, textfieldCateg.getSelectedItem().toString(), textfieldText.getText(), textfieldAuthor.getText());
+			
+			WebsiteManager.addPost(post);
+			GitManager.sendPost(post);
 
-		GitManager.sendPost(post);
+			AccessProperties.getInstance().updateDefaultAuthor(Tools.deAccent(textfieldAuthor.getText()));
+			
+			try
+			{
+			    Thread.sleep(1000);
+			}
+			catch(InterruptedException ex)
+			{
+			    Thread.currentThread().interrupt();
+			}
 
-		AccessProperties.getInstance().updateDefaultAuthor(Tools.deAccent(textfieldAuthor.getText()));
-		// QUIT PROGRAM
-		System.exit(0);
+			System.out.println("Done");
+			System.exit(0);
+		}
 	}
 
 }
