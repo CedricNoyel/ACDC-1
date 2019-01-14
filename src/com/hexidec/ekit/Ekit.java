@@ -31,7 +31,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -39,7 +38,6 @@ import javax.swing.SwingConstants;
 import com.hexidec.ekit.EkitCore;
 import com.hexidec.ekit.EkitCoreSpell;
 
-import model.AccessProperties;
 import model.CategoryManager;
 import model.Tools;
 import model.WebsiteManager;
@@ -61,7 +59,7 @@ public class Ekit extends JFrame implements WindowListener
 {
 	private EkitCore ekitCore;
 	private JTextField txtfieldTitle;
-	private JTextField txtfieldGitrepo;
+	private static JTextField txtfieldGitrepo;
 	private JTextField txtfieldAuthor;
 	private static JComboBox<String> txtfieldCateg;
 	private JButton btnRemoveCateg;
@@ -131,10 +129,9 @@ public class Ekit extends JFrame implements WindowListener
 	}
 
 	private void initTxtfields() {
-		txtfieldGitrepo.setText(AccessProperties.getInstance().getLocalRepository());
+		getTxtfieldGitrepo().setText("");
 		txtfieldTitle.setText("");
 		Ekit.updateCategoriesComboBox();
-		txtfieldAuthor.setText(AccessProperties.getInstance().getDefaultAuthor().toString());
 		ekitCore.getTextPane().setText("");
 	}
 
@@ -151,8 +148,11 @@ public class Ekit extends JFrame implements WindowListener
 	/* WindowListener methods */
 	public void windowClosing(WindowEvent we)
 	{
-		WebsiteManager.closeDemo();
-		Tools.executeCmd("git clean -f", AccessProperties.getInstance().getLocalRepository());
+		File f = new File(getTxtfieldGitrepo().getText());
+		if (f.isDirectory()) 
+		{
+			WebsiteManager.closeDemo();
+		}
         this.dispose();
     	System.exit(0);
 	}
@@ -306,18 +306,18 @@ public class Ekit extends JFrame implements WindowListener
 		JPanel panel = new JPanel();
 		JButton btnEditGitPath = new JButton(new ImageIcon(iconEdit));
 		JLabel lblGitRepo = new JLabel("Dépot git", SwingConstants.CENTER);
-		txtfieldGitrepo = new JTextField();
+		setTxtfieldGitrepo(new JTextField());
 
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setBorder(new EmptyBorder(20, 10, 5, 10));
 		lblGitRepo.setPreferredSize(labelSize);
 		btnEditGitPath.setToolTipText("Modifier le chemin");
 
-		ActionListener btnEditGitPathListener = new controller.editGitPathListener(txtfieldGitrepo);
+		ActionListener btnEditGitPathListener = new controller.editGitPathListener(getTxtfieldGitrepo());
 		btnEditGitPath.addActionListener(btnEditGitPathListener);
 
 		panel.add(lblGitRepo);
-		panel.add(txtfieldGitrepo);
+		panel.add(getTxtfieldGitrepo());
 		panel.add(btnEditGitPath);
 		this.getContentPane().add(panel, BorderLayout.NORTH);
 	}
@@ -386,14 +386,22 @@ public class Ekit extends JFrame implements WindowListener
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setBorder(new EmptyBorder(10, 30, 10, 30));
 
-		ActionListener btnValidListener = new controller.btnValiderListener(btnValid, txtfieldTitle, txtfieldCateg, txtfieldAuthor, ekitCore.getTextPane(), txtfieldGitrepo);
+		ActionListener btnValidListener = new controller.btnValiderListener(btnValid, txtfieldTitle, txtfieldCateg, txtfieldAuthor, ekitCore.getTextPane(), getTxtfieldGitrepo());
 		btnValid.addActionListener(btnValidListener);
-		ActionListener btnPreviewListener = new controller.btnPreviewListener(btnPreview, txtfieldTitle, txtfieldCateg, txtfieldAuthor, ekitCore.getTextPane(), txtfieldGitrepo);
+		ActionListener btnPreviewListener = new controller.btnPreviewListener(btnPreview, txtfieldTitle, txtfieldCateg, txtfieldAuthor, ekitCore.getTextPane(), getTxtfieldGitrepo());
 		btnPreview.addActionListener(btnPreviewListener);
 
 		panel.add(btnPreview);
 		panel.add(btnValid);
 		this.getContentPane().add(panel, BorderLayout.SOUTH);
+	}
+
+	public static JTextField getTxtfieldGitrepo() {
+		return txtfieldGitrepo;
+	}
+
+	public static void setTxtfieldGitrepo(JTextField txtfieldGitrepo) {
+		Ekit.txtfieldGitrepo = txtfieldGitrepo;
 	}
 
 }

@@ -8,8 +8,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 
 import com.hexidec.ekit.Ekit;
-
-import model.AccessProperties;
 import model.CategoryManager;
 
 public class editGitPathListener implements ActionListener {
@@ -33,8 +31,10 @@ public class editGitPathListener implements ActionListener {
 		{ 
 			String fileID = chooser.getSelectedFile().getPath();
 			txtfieldGitPath.setText(fileID);
-			AccessProperties.getInstance().updateLocalRepository(fileID);
+			// System.out.println(fileID);
+			// AccessProperties.getInstance().updateLocalRepository(fileID);
 		}
+		
 		CategoryManager.updateFilePath();
 		Ekit.updateCategoriesComboBox();
 	}

@@ -9,6 +9,8 @@ import org.eclipse.jgit.api.errors.NoFilepatternException;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 
+import com.hexidec.ekit.Ekit;
+
 /**
  * Manages the Git services
  * 
@@ -22,9 +24,9 @@ public class GitManager {
 	 */
 	public static void sendPost(Post post){
 		// WITH CMD LINE
-		Tools.executeCmd("git add .", AccessProperties.getInstance().getLocalRepository());
-		Tools.executeCmd("git commit -m \"Add markdown file\"", AccessProperties.getInstance().getLocalRepository());
-		Tools.executeCmd("git push", AccessProperties.getInstance().getLocalRepository());
+		Tools.executeCmd("git add .", Ekit.getTxtfieldGitrepo().getText());
+		Tools.executeCmd("git commit -m \"Add markdown file\"",Ekit.getTxtfieldGitrepo().getText());
+		Tools.executeCmd("git push", Ekit.getTxtfieldGitrepo().getText());
 
 //		FileRepositoryBuilder repoBuilder = new FileRepositoryBuilder();
 //		try {

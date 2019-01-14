@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import com.hexidec.ekit.Ekit;
+
 /**
  * Manages the post categories list
  * 
@@ -19,13 +21,11 @@ import java.util.Scanner;
  */
 public class CategoryManager {
 	
-	private static String FILE_PATH = AccessProperties.getInstance().getLocalRepository() 
-			+ File.separator + "BLOG" + File.separator + "category" + File.separator + "categories.txt";
+	private static String FILE_PATH = Ekit.getTxtfieldGitrepo().getText() + File.separator + "BLOG" + File.separator + "category" + File.separator + "categories.txt";
 	
 	public static void updateFilePath() 
 	{
-		FILE_PATH = AccessProperties.getInstance().getLocalRepository() 
-				+ File.separator + "BLOG" + File.separator + "category" + File.separator + "categories.txt";
+		FILE_PATH = Ekit.getTxtfieldGitrepo().getText() + File.separator + "BLOG" + File.separator + "category" + File.separator + "categories.txt";
 	}
 	
 	public static ArrayList<String> getCategories()

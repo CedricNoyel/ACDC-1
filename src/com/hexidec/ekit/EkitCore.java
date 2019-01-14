@@ -118,7 +118,7 @@ import com.hexidec.ekit.component.*;
 import com.hexidec.util.Base64Codec;
 import com.hexidec.util.Translatrix;
 
-import model.AccessProperties;
+import model.Tools;
 import sun.util.resources.cldr.ss.CurrencyNames_ss;
 
 import com.hexidec.ekit.thirdparty.print.DocumentRenderer;
@@ -899,15 +899,15 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 
 		/* Create menubar and add menus */
 		jMenuBar = new JMenuBar();
-		jMenuBar.add(jMenuFile);
-		jMenuBar.add(jMenuEdit);
-		jMenuBar.add(jMenuView);
+//		jMenuBar.add(jMenuFile);
+//		jMenuBar.add(jMenuEdit);
+//		jMenuBar.add(jMenuView);
 		jMenuBar.add(jMenuFont);
 		jMenuBar.add(jMenuFormat);
 //		jMenuBar.add(jMenuSearch);
-		jMenuBar.add(jMenuInsert);
-		jMenuBar.add(jMenuTable);
-		jMenuBar.add(jMenuForms);
+//		jMenuBar.add(jMenuInsert);
+//		jMenuBar.add(jMenuTable);
+//		jMenuBar.add(jMenuForms);
 		if(jMenuTools != null) { jMenuBar.add(jMenuTools); }
 //		jMenuBar.add(jMenuHelp);
 		if(debugMode)
@@ -1166,7 +1166,7 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 			jbtnAddImgFromFolder.setToolTipText("Add a local image");
 			jbtnAddImgFromFolder.setActionCommand(CMD_INSERT_IMAGE_LOCAL);
 			jbtnAddImgFromFolder.addActionListener(this);
-			htTools.put(KEY_TOOL_STYLES, jbtnAddImgFromFolder);
+			//htTools.put(KEY_TOOL_STYLES, jbtnAddImgFromFolder);
 
 		/* Create the toolbar */
 		if(multiBar)
@@ -2680,7 +2680,7 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 		if(whatImage != null && whatImage.length() > 0)
 		{
 			int caretPos = jtpMain.getCaretPosition();
-			String sImgTag = "<img src=\"" + whatImage + '"';
+			String sImgTag = "<img src=\"" + whatImage + "\"";
 			if(imgUrlDialog.getImageAlt() != null && imgUrlDialog.getImageAlt().length() > 0) { sImgTag = sImgTag + " alt=\"" + imgUrlDialog.getImageAlt() + '"'; }
 			if(imgUrlDialog.getImageWidth() != null && imgUrlDialog.getImageWidth().length() > 0) { sImgTag = sImgTag + " width=\"" + imgUrlDialog.getImageWidth() + '"'; }
 			if(imgUrlDialog.getImageHeight() != null && imgUrlDialog.getImageHeight().length() > 0) { sImgTag = sImgTag + " height=\"" + imgUrlDialog.getImageHeight() + '"'; }
@@ -3070,7 +3070,7 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 				{
 
 			        File srcFile = new File(whatImage.getParentFile() + File.separator + whatImage.getName());
-		    	    String dstFile = AccessProperties.getInstance().getLocalRepository() + File.separator + 
+		    	    String dstFile = Ekit.getTxtfieldGitrepo().getText() + File.separator + 
 			        		"BLOG" + File.separator + "images-blog" + File.separator + whatImage.getName();
 		    	    
 		    	    InputStream fileContent = new FileInputStream(srcFile);
@@ -3089,6 +3089,8 @@ public class EkitCore extends JPanel implements ActionListener, KeyListener, Foc
 					htmlKit.insertHTML(htmlDoc, caretPos, sImgTag, 0, 0, HTML.Tag.IMG);
 					jtpMain.setCaretPosition(caretPos + 1);
 					refreshOnUpdate();
+					Tools.executeCmd("git add .", Ekit.getTxtfieldGitrepo().getText() + File.separator + 
+			        		"BLOG" + File.separator + "images-blog");
 				}
 			}
 			catch(Exception e)

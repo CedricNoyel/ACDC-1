@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import com.hexidec.ekit.Ekit;
+
 /**
  * Manages website linked services
  * 
@@ -11,7 +13,7 @@ import java.io.IOException;
  */
 public class WebsiteManager {
 
-	private static final String WEBSITE_PATH = AccessProperties.getInstance().getLocalRepository() + File.separator;
+	private static final String WEBSITE_PATH = Ekit.getTxtfieldGitrepo().getText() + File.separator;
 	private static final String BLOG_PATH = WEBSITE_PATH + "BLOG" + File.separator;
 	private static final String POSTS_PATH = WEBSITE_PATH + "BLOG" + File.separator + "_posts" + File.separator;
 
@@ -80,6 +82,7 @@ public class WebsiteManager {
 	{
 		if(webRunner.isAlive() && proc != null){
 			proc.destroy();
+			Tools.executeCmd("git clean -f", Ekit.getTxtfieldGitrepo().getText());
 			Tools.executeCmd("taskkill /IM \"ruby.exe\" /F", System.getProperty("user.dir"));
 		} else {
 			ErrorManager.sendError("The demo is not running.");

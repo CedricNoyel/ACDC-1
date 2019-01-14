@@ -15,7 +15,7 @@ public class Tools {
 	 * @param path - String of the path where to execute the command
 	 */
 	public static void executeCmd(String cmd, String path) {
-		System.out.println("COMMAND RUN: " + cmd + "\r	in " + path);
+		System.out.println("COMMAND RUN: " + cmd + " in " + path);
 		ProcessBuilder builder = new ProcessBuilder();
 		builder.directory(new File(path));
 		Process process = null;

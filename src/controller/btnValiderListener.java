@@ -4,17 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
 import com.hexidec.ekit.Ekit;
 
-import model.AccessProperties;
 import model.GitManager;
 import model.Post;
 import model.Tools;
@@ -43,18 +40,16 @@ public class btnValiderListener implements ActionListener
 		if (btnPreviewListener.areFieldsOk()) 
 		{
 			WebsiteManager.closeDemo();
-			Tools.executeCmd("git clean -f", AccessProperties.getInstance().getLocalRepository());
+			Tools.executeCmd("git clean -f", Ekit.getTxtfieldGitrepo().getText());
 			
 			btnValid.setEnabled(false);
-			btnValid.setText("Publication du post en cours");
+			btnValid.setText("Publication en cours");
 			
 			String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 			Post post = new Post(textfieldTitle.getText(),	todayDate, textfieldCateg.getSelectedItem().toString(), textfieldText.getText(), textfieldAuthor.getText());
 			
 			WebsiteManager.addPost(post);
 			GitManager.sendPost(post);
-
-			AccessProperties.getInstance().updateDefaultAuthor(Tools.deAccent(textfieldAuthor.getText()));
 			
 			try
 			{

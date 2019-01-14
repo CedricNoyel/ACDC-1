@@ -6,16 +6,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale.Category;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 
-import model.AccessProperties;
+import com.hexidec.ekit.Ekit;
+
+import model.CategoryManager;
 import model.Post;
 import model.Tools;
 import model.WebsiteManager;
+import sun.security.util.Length;
 
 public class btnPreviewListener implements ActionListener 
 {
@@ -39,23 +44,13 @@ public class btnPreviewListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0) 
 	{
-		if (areFieldsOk()) {
+		if (areFieldsOk()) 
+		{
 			String todayDate = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
-			Post post = new Post(textfieldTitle.getText(),	todayDate, textfieldCateg.getSelectedItem().toString(), textfieldText.getText(), textfieldAuthor.getText());
+			Post post = new Post(textfieldTitle.getText(), todayDate, textfieldCateg.getSelectedItem().toString(), textfieldText.getText(), textfieldAuthor.getText());
 			WebsiteManager.addPost(post);
 			System.out.println("Starting the demo at http://127.0.0.1:4000/blog/...");
 			WebsiteManager.seeDemo();
-			AccessProperties.getInstance().updateDefaultAuthor(Tools.deAccent(textfieldAuthor.getText()));
-			
-			try
-			{
-			    Thread.sleep(10000);
-			}
-			catch(InterruptedException ex)
-			{
-			    Thread.currentThread().interrupt();
-			}
-			Tools.executeCmd("git clean -f", AccessProperties.getInstance().getLocalRepository());
 		}
 	}
 
@@ -64,7 +59,7 @@ public class btnPreviewListener implements ActionListener
 		List<String> fieldsError = new ArrayList<String>();
 		int defaulTextfieldTextLength = 110;
 		
-		if (textfieldGitRepo.getText().isEmpty()) {
+		if (Ekit.getTxtfieldGitrepo().getText().isEmpty()) {
 			fieldsError.add("'Dépot git'");
 		}
 		if (textfieldTitle.getText().isEmpty()) {
@@ -73,7 +68,7 @@ public class btnPreviewListener implements ActionListener
 		if (textfieldAuthor.getText().isEmpty()) {
 			fieldsError.add("'Auteur'");
 		}
-		if (textfieldCateg.getSelectedItem().toString().isEmpty()) {
+		if (textfieldCateg.getSelectedItem() == null) {
 			fieldsError.add("'Catégorie'");
 		}
 		if (textfieldText.getText().length() == defaulTextfieldTextLength) {
